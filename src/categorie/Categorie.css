@@ -1,0 +1,16 @@
+.category-nav {
+  padding: 0;
+  margin: 0;
+  display: block;
+  list-style: none;
+  border-left: 1px solid #eee;
+}
+.category-nav a {
+  display: block;
+  padding: 0.125rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+.category-nav a:not(:hover) {
+  color: #99979c;
+}

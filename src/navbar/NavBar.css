@@ -1,0 +1,15 @@
+.navbar-brand {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.navbar-brand span {
+  font-size: 10px;
+  color: #3f51b5;
+  margin-left: -2px;
+  top: 13px;
+  position: relative;
+  font-weight: 500;
+}
+.mb-3-em {
+  margin-bottom: 3em;
+}

@@ -1,0 +1,23 @@
+@import url('//fonts.googleapis.com/css?family=Merriweather:300,400|Roboto:300,400,500|Material+Icons');
+
+html {
+  min-height: 100%;
+}
+body {
+  font-family: Roboto, sans-serif;
+  padding-bottom: 30px;
+  min-height: 100%;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 0.015rem;
+  line-height: 1.7;
+  color: #040404;
+}
+b,
+strong,
+.badge {
+  font-weight: 500;
+}
+a {
+  color: #3f51b5;
+}

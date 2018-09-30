@@ -1,0 +1,205 @@
+.post-container {
+  margin-bottom: 3rem;
+}
+.post-card {
+  height: 100%;
+  white-space: normal;
+  word-wrap: break-word;
+  background: #fff;
+  padding: 15px;
+  margin-bottom: 30px;
+  border: 1px solid #efefef;
+  -webkit-transition: box-shadow ease 0.3s;
+  -moz-transition: box-shadow ease 0.3s;
+  -o-transition: box-shadow ease 0.3s;
+  -ms-transition: box-shadow ease 0.3s;
+  transition: box-shadow ease 0.3s;
+}
+.post-card:hover {
+  box-shadow: 0 0 20px 0 #efefef;
+  cursor: pointer;
+}
+.post-card a.read-more {
+  margin-left: -15px;
+  white-space: nowrap;
+}
+.post-card h2 {
+  margin: 10px 0 15px;
+  font-size: 1.3rem;
+  line-height: 1.5em;
+}
+.post-card h2 a {
+  color: #404040;
+  font-weight: 500;
+  text-decoration: none;
+}
+.post-card h2 a:hover {
+  color: #3f51b5;
+}
+.post-card .post-img,
+.post-img-bg {
+  height: 220px;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.post-img-bg {
+  background: #efefef;
+}
+.post-img-bg img {
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  filter: grayscale(100%);
+}
+.post-card .edit-post .material-icons {
+  font-size: 16px;
+}
+.post-card .edit-post:not(:hover) .material-icons {
+  color: #999;
+}
+.post-card .byline {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  color: #9f9f9f;
+}
+.post-card .byline .fa {
+  font-size: 4px;
+  vertical-align: middle;
+  margin: 0 5px;
+  margin-top: -2px;
+}
+.post-card .byline a:not(:hover) {
+  color: #404040;
+}
+.post-card .sep-dot,
+.ui-post-page .sep-dot,
+.ui-add-comment .sep-dot {
+  opacity: 0.5;
+  width: 4px;
+  height: 4px;
+  vertical-align: middle;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: -2px;
+}
+
+/*
+*/
+.ui-post-page {
+  background: #fff;
+  /* padding: 15px 30px; */
+  padding: 0 30px 30px 0;
+}
+.ui-post-page h1.post-title {
+  color: #000;
+  font-size: 2em;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.ui-post-page .description {
+  font-family: Merriweather, sans-serif;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.ui-post-page .description h1,
+.ui-post-page .description h2,
+.ui-post-page .description h3,
+.ui-post-page .description h4,
+.ui-post-page .description h5,
+.ui-post-page .description h6 {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+}
+.ui-post-page .description h1 {
+  font-size: 1.5em;
+}
+.ui-post-page .description h2 {
+  font-size: 1.4em;
+}
+.ui-post-page .description h3 {
+  font-size: 1.3em;
+}
+.ui-post-page .description h4 {
+  font-size: 1.2em;
+}
+.ui-post-page .description h5 {
+  font-size: 1em;
+}
+.ui-post-page .description h6 {
+  font-size: 0.8em;
+}
+
+.ui-post-page .description img {
+  margin: auto;
+  margin-bottom: 15px;
+  display: block;
+  border: 1px solid #eaeaea;
+  max-width: 100%;
+}
+.ui-post-page .byline {
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #9f9f9f;
+}
+.ui-post-page .byline .fa {
+  font-size: 4px;
+  vertical-align: middle;
+  margin: 0 5px;
+  margin-top: -2px;
+}
+.ui-post-page .byline a:not(:hover) {
+  color: #404040;
+}
+
+.ui-add-comment {
+  padding-top: 15px;
+  background: #fafafa;
+}
+.ui-add-comment .ui-add-comment-header h4 {
+  display: inline-block;
+  padding: 6px 15px;
+  background: rgba(63, 81, 181, 0.8);
+  color: #fff;
+  font-size: 16px;
+  margin: 0;
+  margin-left: -5px;
+}
+.ui-add-comment .ui-add-comment-body {
+  padding: 15px;
+}
+.ui-add-comment .comment-row p {
+  font-size: 14px;
+  font-weight: 300;
+  margin-bottom: 5px;
+}
+.ui-add-comment .comment-row:not(:last-child) {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px dashed #efefef;
+}
+.ui-add-comment .byline {
+  text-transform: uppercase;
+  color: #9f9f9f;
+}
+.ui-add-comment .byline a:not(:hover) {
+  color: #404040;
+}
+.ui-add-comment .ui-add-comment-footer {
+  background: #efefef;
+  padding: 15px;
+}
+.post-comment-form-control,
+.post-comment-form-control:focus {
+  border-radius: 0;
+  margin-bottom: 15px;
+  border: 1px solid #fff;
+  outline: none;
+  resize: none;
+  box-shadow: none;
+}
+.post-comment-form-control:focus {
+  border-color: #3f51b5;
+}
