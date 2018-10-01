@@ -10,7 +10,7 @@ function AuthorMarkup(props) {
     <div className="profile-container-bg">
       <div className="profile-container clearfix">
         <div className="profile-container-left">
-          <img src="/images/user.png" />
+          <img src="/images/user.png" alt="user" />
         </div>
         <div>
           <div className="info">

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Form from '../form/Form';
 import Fields from './fields';
@@ -18,7 +18,7 @@ class Signup extends Form {
       .max(50)
       .label('Email'),
     name: Joi.string()
-      .min(5)
+      .min(3)
       .max(25)
       .required()
       .label('Name'),

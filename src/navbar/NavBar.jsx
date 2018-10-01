@@ -14,7 +14,7 @@ class NavBar extends Component {
         <div className="container d-flex flex-column flex-md-row align-items-center ">
           <div className="navbar-header">
             <a href="/" className="navbar-brand">
-              <img src={logo} />
+              <img src={logo} alt="logo" />
               <span>BLOG</span>
             </a>
           </div>

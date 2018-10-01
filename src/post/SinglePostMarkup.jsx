@@ -4,7 +4,6 @@ import Moment from 'moment';
 import Brightness from '@material-ui/icons/Brightness1';
 function SinglePostMarkup(props) {
   const {
-    _id: id,
     title,
     category,
     description,
