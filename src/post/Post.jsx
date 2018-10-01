@@ -6,7 +6,7 @@ import Brightness from '@material-ui/icons/Brightness1';
 
 import imagePlaceHolder from '../logo.svg';
 
-function getTitle(title = '', len = 75) {
+function getTitle(title = '', len = 60) {
   if (title.length > len) {
     return `${title.substring(0, len)}...`;
   }
@@ -33,7 +33,9 @@ function Post({ post }) {
     created_on: createdOn
   } = post;
 
-  const MyLink = props => <Link to={`/post/${id}`} {...props} />;
+  const MyLink = props => (
+    <Link to={`/post/${id}/${getEncodeURI(title)}`} {...props} />
+  );
 
   return (
     <div className="col-md-4 col-sm-6 post-container">

@@ -10,6 +10,7 @@ import Author from './author/Author';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import './login/Login.css';
 
 class App extends Component {
   render() {
@@ -27,8 +28,8 @@ class App extends Component {
               <Route path="/" exact component={Posts} />
             </Switch>
           </main>
-          <footer>
-            <div class="container text-center">
+          <footer className="footer">
+            <div className="container text-center">
               <p>© 2016 Rohit Kumar Gautam.</p>
             </div>
           </footer>

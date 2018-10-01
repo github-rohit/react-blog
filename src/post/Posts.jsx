@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import queryString from 'query-string';
 import TablePagination from '@material-ui/core/TablePagination';
 import Post from './Post';
 import './Post.css';
@@ -6,7 +7,13 @@ import './Post.css';
 class Posts extends Component {
   state = { posts: [], count: 0, rowsPerPage: 12, page: 0 };
 
-  async componentDidMount() {
+  handelPageChange(e, page) {
+    this.props.history.push(`/?page=${page + 1}`);
+    this.setState({ page });
+    this.getPosts();
+  }
+
+  async getPosts() {
     const query = this.getQuery();
 
     try {
@@ -21,12 +28,27 @@ class Posts extends Component {
     }
   }
 
+  componentDidMount() {
+    this.getPosts();
+  }
+
   getQuery() {
-    const queryArray = [];
+    const queryArray = [`limit=${this.state.rowsPerPage}`];
     const { createdBy } = this.props;
+    const { category, page } = queryString.parse(this.props.location.search);
 
     if (createdBy) {
       queryArray.push(`createdBy=${createdBy}`);
+    }
+
+    if (category) {
+      queryArray.push(`category=${category}`);
+    }
+
+    if (page) {
+      queryArray.push(`page=${page}`);
+    } else {
+      queryArray.push(`page=${this.state.page + 1}`);
     }
 
     return queryArray.join('&');
@@ -54,9 +76,7 @@ class Posts extends Component {
             nextIconButtonProps={{
               'aria-label': 'Next Page'
             }}
-            onChangePage={() => {
-              console.log('onChangePage');
-            }}
+            onChangePage={this.handelPageChange.bind(this)}
             onChangeRowsPerPage={() => {
               console.log('onChangeRowsPerPage');
             }}

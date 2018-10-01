@@ -100,9 +100,11 @@
   line-height: 1.5;
 }
 .ui-post-page .description {
-  font-family: Merriweather, sans-serif;
   line-height: 1.7;
   font-weight: 300;
+}
+.ui-post-page .description p {
+  margin-bottom: 2em;
 }
 .ui-post-page .description h1,
 .ui-post-page .description h2,
@@ -110,7 +112,6 @@
 .ui-post-page .description h4,
 .ui-post-page .description h5,
 .ui-post-page .description h6 {
-  font-family: Roboto, sans-serif;
   font-weight: 500;
 }
 .ui-post-page .description h1 {

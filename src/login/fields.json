@@ -1,0 +1,15 @@
+[
+  {
+    "autoFocus": true,
+    "label": "Email address*",
+    "type": "email",
+    "name": "email",
+    "placeholder": "Enter email"
+  },
+  {
+    "label": "Password*",
+    "type": "password",
+    "name": "passwd",
+    "placeholder": "Password"
+  }
+]
