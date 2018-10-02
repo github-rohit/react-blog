@@ -22,8 +22,7 @@ class NavBar extends Component {
   };
 
   handleMobileMenu = () => {
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = overflow ? '' : 'hidden';
+    document.body.classList.toggle('mobile-body-overflow');
 
     this.setState({
       mobileMenuOpen: this.state.mobileMenuOpen ? false : true
@@ -115,7 +114,6 @@ class NavBar extends Component {
                   <li>
                     <a
                       aria-owns={anchorEl ? 'simple-menu' : null}
-                      href="javascript:void(0)"
                       onClick={this.handleClick.bind(this)}
                       className="user-avatar rounded-circle"
                     >
@@ -133,7 +131,6 @@ class NavBar extends Component {
                   <li>
                     <NavLink to="admin/profile" className="d-flex">
                       <div className="user-avatar rounded-circle align-self-center col">
-                        <img />
                         <span>{this.userAvatarText(user.name)}</span>
                       </div>
                       <div className="col">

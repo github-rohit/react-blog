@@ -166,6 +166,9 @@
 }
 
 @media (max-width: 640px) {
+  .mobile-body-overflow {
+    overflow: hidden;
+  }
   .menu-signup-btn {
     width: 100%;
     margin-top: 1rem !important;

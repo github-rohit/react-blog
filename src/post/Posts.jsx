@@ -4,12 +4,21 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Post from './Post';
 import './Post.css';
 
-class Posts extends Component {
-  state = { posts: [], count: 0, rowsPerPage: 12, page: 0 };
+const LIMIT = 12;
 
-  handelPageChange(e, page) {
-    this.props.history.push(`/?page=${page + 1}`);
-    this.setState({ page });
+class Posts extends Component {
+  state = { posts: [], count: 0, rowsPerPage: LIMIT, page: 0 };
+
+  async handelPageChange(e, page) {
+    await this.setState({ page });
+    this.updateQuryParams('page');
+    this.getPosts();
+  }
+
+  async handelRowsPerPage(e) {
+    const { value } = e.target;
+    await this.setState({ rowsPerPage: value });
+    this.updateQuryParams('limit', value);
     this.getPosts();
   }
 
@@ -28,30 +37,59 @@ class Posts extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getPosts();
+  updateQuryParams(key, value) {
+    const url = new URLSearchParams(this.props.location.search);
+
+    if (key === 'page') {
+      url.set(key, this.state[key] + 1);
+    } else {
+      url.set(key, value);
+    }
+
+    this.props.history.push(`?${url.toString()}`);
   }
 
   getQuery() {
-    const queryArray = [`limit=${this.state.rowsPerPage}`];
-    const { createdBy } = this.props;
-    const { category, page } = queryString.parse(this.props.location.search);
+    const url = new URLSearchParams();
+    const { page, rowsPerPage: limit } = this.state;
+    const { category, createdBy: cb } = queryString.parse(
+      this.props.location.search
+    );
+    const { createdBy = cb } = this.props;
+
+    url.set('page', page + 1);
+    url.set('limit', limit);
 
     if (createdBy) {
-      queryArray.push(`createdBy=${createdBy}`);
+      url.set('createdBy', createdBy);
     }
 
     if (category) {
-      queryArray.push(`category=${category}`);
+      url.set('category', category);
     }
 
-    if (page) {
-      queryArray.push(`page=${page}`);
-    } else {
-      queryArray.push(`page=${this.state.page + 1}`);
+    return url.toString();
+  }
+
+  setPaginationValues() {
+    const stateObj = {};
+    const { page, limit } = queryString.parse(this.props.location.search);
+
+    if (!isNaN(page)) {
+      stateObj.page = (+page || 1) - 1;
     }
 
-    return queryArray.join('&');
+    if (!isNaN(limit)) {
+      stateObj.rowsPerPage = +limit;
+    }
+
+    this.setState(stateObj);
+  }
+
+  async componentDidMount() {
+    await this.setPaginationValues();
+    this.getPosts();
+    this.load = true;
   }
 
   render() {
@@ -63,23 +101,23 @@ class Posts extends Component {
           {length > 0 &&
             this.state.posts.map(post => <Post key={post._id} post={post} />)}
         </div>
-        {count > rowsPerPage && (
+        {count > LIMIT && (
           <TablePagination
             component="div"
             count={this.state.count}
             rowsPerPage={this.state.rowsPerPage}
             page={this.state.page}
-            rowsPerPageOptions={[12, 24, 36, 48, 60]}
+            rowsPerPageOptions={[3, 6, 12, 24]}
             backIconButtonProps={{
               'aria-label': 'Previous Page'
             }}
             nextIconButtonProps={{
               'aria-label': 'Next Page'
             }}
-            onChangePage={this.handelPageChange.bind(this)}
-            onChangeRowsPerPage={() => {
-              console.log('onChangeRowsPerPage');
+            onChangePage={(e, p) => {
+              this.handelPageChange(e, p);
             }}
+            onChangeRowsPerPage={this.handelRowsPerPage.bind(this)}
           />
         )}
       </React.Fragment>
