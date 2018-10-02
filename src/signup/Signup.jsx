@@ -1,13 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import CheckCircle from '@material-ui/icons/CheckCircleOutlineSharp';
+import Joi from 'joi-browser';
 import Form from '../form/Form';
 import Fields from './fields';
-import Joi from 'joi-browser';
+import CustomizedSnackbars from '../common/MySnackbarContent';
 
 class Signup extends Form {
   state = {
-    data: { email: '', name: '', passwd: '', confirmPasswd: '' },
-    errors: {}
+    data: {
+      email: '',
+      name: '',
+      passwd: '',
+      confirmPasswd: ''
+    },
+    errors: {},
+    success: false
   };
 
   schema = {
@@ -48,8 +57,34 @@ class Signup extends Form {
     document.body.classList.remove('darkClass');
   }
 
+  successMsg() {
+    const LoginLink = props => <Link to={`/login`} {...props} />;
+
+    return (
+      <div className="form-card form-card--success">
+        <div className="form-card__head form-card--success__head">
+          <CheckCircle fontSize="inherit" />
+          <div className="label">SUCCESS</div>
+        </div>
+        <div className="form-card__body text-center form-card--success__body">
+          Congratulations your account has been successfully created
+        </div>
+        <div className="form-card__foot text-center form-card--success__foot">
+          <Button
+            component={LoginLink}
+            type="submit"
+            variant="outlined"
+            size="large"
+            color="primary"
+          >
+            Click here to Login
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   async doSubmit() {
-    console.log('');
     try {
       const response = await fetch(`http://localhost:3000/api/user`, {
         mode: 'cors',
@@ -60,38 +95,57 @@ class Signup extends Form {
         },
         body: JSON.stringify(this.state.data)
       });
-      const a = await response.json();
 
-      console.log(a);
+      const { success, errors = {} } = await response.json();
+
+      if (response.status === 403) {
+        errors.email = errors.msg;
+      }
+
+      this.setState({ success, errors });
     } catch (ex) {
       console.log(ex);
     }
   }
 
   render() {
+    const { success, errors } = this.state;
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <div className="form-card">
-          <div className="form-card__head">
-            <div className="form-card__head-label">
-              <h3 className="form-card__head-title">SIGN UP</h3>
+      <React.Fragment>
+        {errors.msg && (
+          <CustomizedSnackbars
+            variant="error"
+            horizontal="center"
+            message={errors.msg}
+          />
+        )}
+        {success ? (
+          this.successMsg()
+        ) : (
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <div className="form-card">
+              <div className="form-card__head">
+                <div className="form-card__head-label">
+                  <h3 className="form-card__head-title">SIGN UP</h3>
+                </div>
+              </div>
+              <div className="form-card__body">
+                {this.renderAllFieldMarkup(Fields)}
+              </div>
+              <div className="form-card__foot">
+                <Button
+                  disabled={!!this.validateAll()}
+                  type="submit"
+                  variant="outlined"
+                  color="primary"
+                >
+                  Sign up
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="form-card__body">
-            {this.renderAllFieldMarkup(Fields)}
-          </div>
-          <div className="form-card__foot">
-            <Button
-              disabled={!!this.validateAll()}
-              type="submit"
-              variant="outlined"
-              color="primary"
-            >
-              Sign up
-            </Button>
-          </div>
-        </div>
-      </form>
+          </form>
+        )}
+      </React.Fragment>
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import FieldMarkup from '../form/FormFields';
 import Joi from 'joi-browser';
+import FieldMarkup from '../form/FormFields';
 
 class Form extends Component {
   handleChange({ currentTarget: input }) {
@@ -59,17 +59,13 @@ class Form extends Component {
     const { error } = Joi.validate(this.state.data, this.schema, {
       abortEarly: false
     });
-
     if (!error) {
       return null;
     }
-
     const errors = {};
-
     for (let item of error.details) {
       !errors[item.path[0]] && (errors[item.path[0]] = item.message);
     }
-
     return errors;
   }
 

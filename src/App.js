@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NavBar from './navbar/NavBar';
 import Signup from './signup/Signup';
 import Login from './login/Login';
+import Logout from './logout/Logout';
 import Posts from './post/Posts';
 import SinglePost from './post/SinglePost';
 import Author from './author/Author';
@@ -11,6 +12,7 @@ import Author from './author/Author';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import './login/Login.css';
+import './navbar/NavBar.css';
 
 class App extends Component {
   render() {
@@ -22,6 +24,7 @@ class App extends Component {
             <Switch>
               <Route path="/sign-up" component={Signup} />
               <Route path="/login" component={Login} />
+              <Route path="/logout" component={Logout} />
               <Route path="/post/:id/:title" component={SinglePost} />
               <Route path="/author/:id/:name" component={Author} />
               <Route path="/login" component={Login} />

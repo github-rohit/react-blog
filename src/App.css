@@ -3,6 +3,9 @@
 html {
   min-height: 100%;
 }
+*:focus {
+  outline: none;
+}
 body {
   font-family: Poppins, sans-serif;
   min-height: 100%;
@@ -22,6 +25,9 @@ strong,
 }
 a {
   color: #3f51b5;
+}
+.mobile-show {
+  display: none !important;
 }
 button:focus {
   outline: 0;
@@ -119,4 +125,67 @@ button:focus {
   border-top: 1px solid #eeeef4;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+.form-card--success {
+  max-width: 500px;
+}
+.form-card--success__head {
+  background: #43a047;
+  color: #fff;
+  padding: 32px;
+  font-size: 24px;
+  text-align: center;
+  display: block;
+}
+.form-card--success__head svg {
+  font-size: 96px;
+}
+.form-card--success__body {
+  padding: 48px 32px;
+  font-size: 21px;
+  font-weight: 300;
+}
+.form-card--success__foot {
+  padding-bottom: 32px;
+  padding-top: 0;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .profile-container-bg .profile-container {
+    padding-bottom: 0;
+  }
+  .profile-container {
+    padding-left: 0;
+  }
+  .profile-container .profile-container-left {
+    display: none;
+  }
+
+  .ui-tabs {
+    margin-top: -15px;
+    margin-bottom: 30px;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-show {
+    display: block !important;
+  }
+
+  .login-card {
+    margin-top: -30px;
+    box-shadow: none;
+    border: 0;
+  }
+  .login-card .card-header {
+    padding-top: 0;
+  }
+}
+@media (max-width: 992px) {
+  .container {
+    max-width: 100%;
+  }
 }
