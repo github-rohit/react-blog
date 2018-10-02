@@ -14,7 +14,6 @@ class Comments extends Component {
       const comments = await response.json();
 
       this.setState({ comments });
-      console.log(comments);
     } catch (ex) {
       console.log(ex);
     }
@@ -31,7 +30,9 @@ class Comments extends Component {
           </div>
           <div className="ui-add-comment-body">
             {length !== 0 &&
-              this.state.comments.map(comment => <Comment comment={comment} />)}
+              this.state.comments.map(comment => (
+                <Comment key={comment._id} comment={comment} />
+              ))}
           </div>
           <div className="ui-add-comment-footer">
             Please{' '}

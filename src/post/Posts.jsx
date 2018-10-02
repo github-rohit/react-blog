@@ -7,7 +7,14 @@ import './Post.css';
 const LIMIT = 12;
 
 class Posts extends Component {
-  state = { posts: [], count: 0, rowsPerPage: LIMIT, page: 0, query: '' };
+  state = {
+    posts: [],
+    count: 0,
+    rowsPerPage: LIMIT,
+    page: 0,
+    query: '',
+    load: false
+  };
 
   async handelPageChange(e, page) {
     await this.setState({ page });
@@ -29,7 +36,7 @@ class Posts extends Component {
       });
       const { posts, total: count } = await response.json();
 
-      this.setState({ posts, count });
+      this.setState({ posts, count, load: true });
     } catch (ex) {
       console.log(ex);
     }
@@ -84,10 +91,26 @@ class Posts extends Component {
     this.setState(stateObj);
   }
 
+  noRecord() {
+    const { category } = queryString.parse(this.state.query);
+    if (!category) {
+      return null;
+    }
+
+    return (
+      <div className="text-center col">
+        <h1>:( OOPS</h1>
+        <h3>
+          No record found for {<span className="text-danger">{category}</span>}{' '}
+          Category .
+        </h3>
+      </div>
+    );
+  }
+
   async componentDidMount() {
     await this.setPaginationValues();
     this.getPosts();
-    this.load = true;
   }
 
   async componentWillReceiveProps(newProps) {
@@ -100,19 +123,25 @@ class Posts extends Component {
   }
 
   render() {
-    const { count, rowsPerPage } = this.state;
+    const { count, rowsPerPage, load } = this.state;
     const { length } = this.state.posts;
+
     return (
       <React.Fragment>
-        <div className="row">
-          {length > 0 &&
-            this.state.posts.map(post => <Post key={post._id} post={post} />)}
-        </div>
+        {load && (
+          <div className="row">
+            {length === 0
+              ? this.noRecord()
+              : this.state.posts.map(post => (
+                  <Post key={post._id} post={post} />
+                ))}
+          </div>
+        )}
         {count > LIMIT && (
           <TablePagination
             component="div"
             count={this.state.count}
-            rowsPerPage={this.state.rowsPerPage}
+            rowsPerPage={rowsPerPage}
             page={this.state.page}
             rowsPerPageOptions={[3, 6, 12, 24]}
             backIconButtonProps={{
