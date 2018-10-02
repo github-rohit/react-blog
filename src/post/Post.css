@@ -204,3 +204,29 @@
 .post-comment-form-control:focus {
   border-color: #3f51b5;
 }
+
+.serach-input {
+  background: #f9f9fc;
+  border: 1px solid transparent;
+  width: 100%;
+  border-radius: 18px;
+  min-height: 36px;
+  padding: 0 16px;
+  margin-bottom: 2em;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.serach-input::placeholder {
+  color: #666;
+}
+.serach-input:hover {
+  background: #eee;
+}
+.serach-input:active,
+.serach-input:focus {
+  border-color: rgba(63, 81, 181, 1);
+  background: #fff;
+}
+.serach-input:focus {
+  -webkit-box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.5);
+  box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.5);
+}

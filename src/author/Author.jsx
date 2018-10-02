@@ -26,7 +26,7 @@ class Author extends Component {
     return (
       <React.Fragment>
         <AuthorMarkup author={this.state.author} />
-        <Posts createdBy={id} />
+        <Posts createdBy={id} {...this.props} />
       </React.Fragment>
     );
   }

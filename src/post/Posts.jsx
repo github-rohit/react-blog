@@ -4,7 +4,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Post from './Post';
 import './Post.css';
 
-const LIMIT = 12;
+const LIMIT = 10;
 
 class Posts extends Component {
   state = {
@@ -23,8 +23,8 @@ class Posts extends Component {
 
   async handelRowsPerPage(e) {
     const { value } = e.target;
-    await this.setState({ rowsPerPage: value });
-    this.updateQuryParams('limit', value);
+    await this.setState({ rowsPerPage: value, page: 0 });
+    this.getPosts();
   }
 
   async getPosts() {
@@ -143,7 +143,6 @@ class Posts extends Component {
             count={this.state.count}
             rowsPerPage={rowsPerPage}
             page={this.state.page}
-            rowsPerPageOptions={[3, 6, 12, 24]}
             backIconButtonProps={{
               'aria-label': 'Previous Page'
             }}

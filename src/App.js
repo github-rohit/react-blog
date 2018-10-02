@@ -5,7 +5,7 @@ import NavBar from './navbar/NavBar';
 import Signup from './signup/Signup';
 import Login from './login/Login';
 import Logout from './logout/Logout';
-import Posts from './post/Posts';
+import Home from './home/Home';
 import SinglePost from './post/SinglePost';
 import Author from './author/Author';
 
@@ -28,7 +28,7 @@ class App extends Component {
               <Route path="/post/:id/:title" component={SinglePost} />
               <Route path="/author/:id/:name" component={Author} />
               <Route path="/login" component={Login} />
-              <Route path="/" exact component={Posts} />
+              <Route path="/" exact component={Home} />
             </Switch>
           </main>
           <footer className="footer">
