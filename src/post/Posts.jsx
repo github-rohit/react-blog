@@ -7,25 +7,23 @@ import './Post.css';
 const LIMIT = 12;
 
 class Posts extends Component {
-  state = { posts: [], count: 0, rowsPerPage: LIMIT, page: 0 };
+  state = { posts: [], count: 0, rowsPerPage: LIMIT, page: 0, query: '' };
 
   async handelPageChange(e, page) {
     await this.setState({ page });
     this.updateQuryParams('page');
-    this.getPosts();
   }
 
   async handelRowsPerPage(e) {
     const { value } = e.target;
     await this.setState({ rowsPerPage: value });
     this.updateQuryParams('limit', value);
-    this.getPosts();
   }
 
   async getPosts() {
-    const query = this.getQuery();
-
     try {
+      const query = await this.getQuery();
+
       const response = await fetch(`http://localhost:3000/api/posts?${query}`, {
         mode: 'cors'
       });
@@ -51,10 +49,8 @@ class Posts extends Component {
 
   getQuery() {
     const url = new URLSearchParams();
-    const { page, rowsPerPage: limit } = this.state;
-    const { category, createdBy: cb } = queryString.parse(
-      this.props.location.search
-    );
+    const { page, rowsPerPage: limit, query } = this.state;
+    const { category, createdBy: cb } = queryString.parse(query);
     const { createdBy = cb } = this.props;
 
     url.set('page', page + 1);
@@ -72,7 +68,9 @@ class Posts extends Component {
   }
 
   setPaginationValues() {
-    const stateObj = {};
+    const stateObj = {
+      query: this.props.location.search
+    };
     const { page, limit } = queryString.parse(this.props.location.search);
 
     if (!isNaN(page)) {
@@ -90,6 +88,15 @@ class Posts extends Component {
     await this.setPaginationValues();
     this.getPosts();
     this.load = true;
+  }
+
+  async componentWillReceiveProps(newProps) {
+    const query = newProps.location.search;
+
+    if (query !== this.state.query) {
+      await this.setState({ query });
+      this.getPosts();
+    }
   }
 
   render() {
