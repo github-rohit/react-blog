@@ -8,11 +8,14 @@ import Logout from './logout/Logout';
 import Home from './home/Home';
 import SinglePost from './post/SinglePost';
 import Author from './author/Author';
+import MyPosts from './admin/MyPosts';
+import NewPost from './admin/NewPost';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import './login/Login.css';
 import './navbar/NavBar.css';
+import './admin/Admin.css';
 
 class App extends Component {
   render() {
@@ -27,6 +30,8 @@ class App extends Component {
               <Route path="/logout" component={Logout} />
               <Route path="/post/:id/:title" component={SinglePost} />
               <Route path="/author/:id/:name" component={Author} />
+              <Route path="/admin/post/new" component={NewPost} />
+              <Route path="/admin/myposts" component={MyPosts} />
               <Route path="/login" component={Login} />
               <Route path="/" exact component={Home} />
             </Switch>

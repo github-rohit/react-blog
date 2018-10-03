@@ -77,7 +77,7 @@ class NavBar extends Component {
               </li>
               {user && (
                 <li>
-                  <NavLink to="/logout">MY POSTS</NavLink>
+                  <NavLink to="/admin/myposts">MY POSTS</NavLink>
                 </li>
               )}
             </ul>

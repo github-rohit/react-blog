@@ -1,7 +1,9 @@
 import React from 'react';
 
-function InputBox(props) {
+export function InputBox(props) {
   return <input {...props} />;
 }
 
-export default InputBox;
+export function Textarea(props) {
+  return <textarea {...props} />;
+}

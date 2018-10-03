@@ -1,0 +1,30 @@
+[
+  {
+    "autoFocus": true,
+    "label": "Post title*",
+    "type": "textarea",
+    "name": "title",
+    "placeholder": "Enter Post Title",
+    "classess": "form-post-title"
+  },
+  {
+    "label": "Description*",
+    "type": "tinymce",
+    "name": "description"
+  },
+  {
+    "label": "Featured image url",
+    "type": "url",
+    "name": "image"
+  },
+  {
+    "label": "Category",
+    "type": "text",
+    "name": "category"
+  },
+  {
+    "label": "Tags",
+    "type": "text",
+    "name": "tags"
+  }
+]

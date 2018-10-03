@@ -3,14 +3,27 @@ import Joi from 'joi-browser';
 import FieldMarkup from '../form/FormFields';
 
 class Form extends Component {
-  handleChange({ currentTarget: input }) {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validate(input);
+  handleChange({ currentTarget, target }) {
+    let input = currentTarget;
 
-    if (errorMessage) {
-      errors[input.name] = errorMessage;
-    } else {
-      delete errors[input.name];
+    if (!currentTarget) {
+      input = {
+        value: target.getContent(),
+        name: target.settings.name
+      };
+    }
+
+    let errors = {};
+
+    if (this.schema[input.name]) {
+      errors = { ...this.state.errors };
+      const errorMessage = this.validate(input);
+
+      if (errorMessage) {
+        errors[input.name] = errorMessage;
+      } else {
+        delete errors[input.name];
+      }
     }
 
     const data = { ...this.state.data };
@@ -29,10 +42,10 @@ class Form extends Component {
       return;
     }
 
-    this.doSubmit();
+    this.doSubmit(e);
   }
 
-  doSubmit() {
+  doSubmit(e) {
     console.log('[Do Something]');
   }
 
@@ -56,7 +69,17 @@ class Form extends Component {
   }
 
   validateAll() {
-    const { error } = Joi.validate(this.state.data, this.schema, {
+    if (!this.schema) {
+      return null;
+    }
+
+    const data = {};
+
+    for (const key of Object.keys(this.schema)) {
+      data[key] = this.state.data[key];
+    }
+
+    const { error } = Joi.validate(data, this.schema, {
       abortEarly: false
     });
     if (!error) {
@@ -70,6 +93,9 @@ class Form extends Component {
   }
 
   validate({ name, value }) {
+    if (!this.schema) {
+      return null;
+    }
     const obj = { [name]: value };
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);

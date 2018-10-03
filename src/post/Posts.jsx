@@ -125,6 +125,7 @@ class Posts extends Component {
   render() {
     const { count, rowsPerPage, load } = this.state;
     const { length } = this.state.posts;
+    const { col = 2 } = this.props;
 
     return (
       <React.Fragment>
@@ -133,7 +134,7 @@ class Posts extends Component {
             {length === 0
               ? this.noRecord()
               : this.state.posts.map(post => (
-                  <Post key={post._id} post={post} />
+                  <Post key={post._id} col={col} post={post} />
                 ))}
           </div>
         )}

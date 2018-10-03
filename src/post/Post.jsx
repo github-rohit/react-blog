@@ -23,7 +23,7 @@ function getEncodeURI(title) {
   return '';
 }
 
-function Post({ post }) {
+function Post({ post, col }) {
   const {
     _id: id,
     image,
@@ -38,7 +38,7 @@ function Post({ post }) {
   );
 
   return (
-    <div className="col-md-6 col-sm-6 post-container">
+    <div className={`col-md-${12 / col} col-sm-6 post-container`}>
       <article className="post-card d-flex flex-wrap align-content-between">
         <div className="w-100">
           <div
