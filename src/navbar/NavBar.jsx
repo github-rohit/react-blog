@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
+import NoteAddOutlined from '@material-ui/icons/NoteAddOutlined';
 import authService from '../common/services/AuthService';
 import logo from '../logo.svg';
 
@@ -44,6 +45,7 @@ class NavBar extends Component {
   render() {
     const { user, anchorEl, mobileMenuOpen } = this.state;
     const SignUpLink = props => <Link to={`/sign-up`} {...props} />;
+    const WriteLink = props => <Link to={`/admin/post/new`} {...props} />;
 
     return (
       <header className="navbar navbar-expand">
@@ -77,7 +79,7 @@ class NavBar extends Component {
               </li>
               {user && (
                 <li>
-                  <NavLink to="/admin/myposts">MY POSTS</NavLink>
+                  <NavLink to="/admin/myposts/published">MY POSTS</NavLink>
                 </li>
               )}
             </ul>
@@ -104,15 +106,26 @@ class NavBar extends Component {
               <React.Fragment>
                 <ul className="nav navbar-nav navbar-right mobile-show">
                   <li>
-                    <NavLink to="/admin/profile">MY PROFILE</NavLink>
+                    <NavLink to="/admin/myprofile/view">MY PROFILE</NavLink>
                   </li>
                   <li>
                     <NavLink to="/logout">LOGOUT</NavLink>
                   </li>
                 </ul>
+                {
+                  <Button
+                    className="menu-write-btn"
+                    component={WriteLink}
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Write
+                  </Button>
+                }
                 <ul className="nav navbar-nav navbar-right mobile-hide">
                   <li>
                     <a
+                      href="javascript:void(0);"
                       aria-owns={anchorEl ? 'simple-menu' : null}
                       onClick={this.handleClick.bind(this)}
                       className="user-avatar rounded-circle"
@@ -129,7 +142,7 @@ class NavBar extends Component {
                   onClose={this.handleClose.bind(this)}
                 >
                   <li>
-                    <NavLink to="admin/profile" className="d-flex">
+                    <NavLink to="/admin/myprofile/view" className="d-flex">
                       <div className="user-avatar rounded-circle align-self-center col">
                         <span>{this.userAvatarText(user.name)}</span>
                       </div>

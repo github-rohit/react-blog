@@ -10,6 +10,8 @@ import SinglePost from './post/SinglePost';
 import Author from './author/Author';
 import MyPosts from './admin/MyPosts';
 import NewPost from './admin/NewPost';
+import ProfileView from './admin/ProfileView';
+import ProfileEdit from './admin/ProfileEdit';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -30,8 +32,10 @@ class App extends Component {
               <Route path="/logout" component={Logout} />
               <Route path="/post/:id/:title" component={SinglePost} />
               <Route path="/author/:id/:name" component={Author} />
+              <Route path="/admin/myprofile/view" component={ProfileView} />
+              <Route path="/admin/myprofile/edit" component={ProfileEdit} />
               <Route path="/admin/post/new" component={NewPost} />
-              <Route path="/admin/myposts" component={MyPosts} />
+              <Route path="/admin/myposts/:status" component={MyPosts} />
               <Route path="/login" component={Login} />
               <Route path="/" exact component={Home} />
             </Switch>

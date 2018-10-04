@@ -3,24 +3,16 @@ import { Link } from 'react-router-dom';
 import Moment from 'moment';
 import Button from '@material-ui/core/Button';
 import Brightness from '@material-ui/icons/Brightness1';
+import { getEncodeURI } from '../common/util';
 
 import imagePlaceHolder from '../logo.svg';
 
-function getTitle(title = '', len = 60) {
+function getTitle(title = '', len = 120) {
   if (title.length > len) {
     return `${title.substring(0, len)}...`;
   }
 
   return title;
-}
-
-function getEncodeURI(title) {
-  if (title) {
-    let urlTitle = title.replace(/ /g, '-');
-    return encodeURIComponent(urlTitle);
-  }
-
-  return '';
 }
 
 function Post({ post, col }) {

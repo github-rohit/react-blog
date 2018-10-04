@@ -9,7 +9,7 @@ function NewPostButtons({ validateAll, handleSubmit }) {
           <Button
             disabled={!!validateAll()}
             onClick={handleSubmit}
-            data-type="publish"
+            data-type="PUBLISHED"
             type="submit"
             variant="outlined"
             color="primary"
@@ -18,7 +18,7 @@ function NewPostButtons({ validateAll, handleSubmit }) {
           </Button>
           &nbsp; &nbsp;
           <Button
-            data-type="draft"
+            data-type="DRAFT"
             disabled={!!validateAll()}
             onClick={handleSubmit}
             type="submit"

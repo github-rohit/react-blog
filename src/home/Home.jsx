@@ -1,23 +1,39 @@
 import React, { Component } from 'react';
 import Posts from '../post/Posts';
 import Categories from '../categorie/Categories';
+import SearchInput from '../form/SearchInput';
 
 class Home extends Component {
-  state = { author: {} };
+  state = { serachQuery: '' };
+
+  handelOnKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.props.history.push(`?q=${e.target.value}`);
+    }
+  }
+
+  componentDidMount() {
+    const url = new URLSearchParams(this.props.location.search);
+    const serachQuery = url.get('q');
+
+    if (serachQuery) {
+      this.setState({ serachQuery });
+    }
+  }
 
   render() {
-    const { id } = this.props.match.params;
+    const serachQuery = this.state.serachQuer;
+
     return (
       <React.Fragment>
         <div className="row">
           <div className="col">
-            <Posts createdBy={id} {...this.props} />
+            <Posts {...this.props} />
           </div>
           <div className="col-md-3">
-            <input
-              type="serach"
-              className="serach-input"
-              placeholder="Search a post"
+            <SearchInput
+              value={serachQuery}
+              onKeyPress={this.handelOnKeyPress.bind(this)}
             />
             <Categories />
           </div>

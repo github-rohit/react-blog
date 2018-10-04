@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputBox } from '../form/Input';
+import { InputBox, Select } from '../form/Input';
 
 function NewPostSubFields({ Fields, onChange, otherData }) {
   return (
@@ -8,12 +8,22 @@ function NewPostSubFields({ Fields, onChange, otherData }) {
         {Fields.map(field => (
           <div className="form-group-sub" key={field.name}>
             <label>{field.label}</label>
-            <InputBox
-              className="form-control"
-              onChange={onChange}
-              value={otherData[field.name]}
-              {...field}
-            />
+            {field.type === 'select' ? (
+              <Select
+                className="form-control"
+                onChange={onChange}
+                value={otherData[field.name]}
+                {...field}
+              />
+            ) : (
+              <InputBox
+                className="form-control"
+                onChange={onChange}
+                value={otherData[field.name]}
+                {...field}
+              />
+            )}
+
             {field.name === 'image' &&
               otherData[field.name] && (
                 <img

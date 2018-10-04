@@ -4,6 +4,7 @@ import Form from '../form/Form';
 import Fields from './fields.json';
 import NewPostSubFields from './NewPostSubFields';
 import NewPostButtons from './NewPostButtons';
+import { autoResizeTextarea } from '../common/util';
 import authService from '../common/services/AuthService';
 
 class NewPost extends Form {
@@ -27,6 +28,15 @@ class NewPost extends Form {
       .required()
       .label('Description')
   };
+
+  handelKeyDown(e) {
+    if (e.key === 'Enter') e.preventDefault();
+  }
+
+  handelKeyup(e) {
+    if (e.key === 'Enter') e.preventDefault();
+    autoResizeTextarea(e.currentTarget);
+  }
 
   async doSubmit(e) {
     try {
@@ -79,7 +89,11 @@ class NewPost extends Form {
           <form className="ui-new-post">
             <div className="row">
               <div className="col">
-                {this.renderFieldMarkup(Fields[0])}
+                {this.renderFieldMarkup({
+                  onKeyDown: this.handelKeyDown,
+                  onKeyUp: this.handelKeyup,
+                  ...Fields[0]
+                })}
                 {this.renderFieldMarkup(Fields[1])}
               </div>
               <div className="col-md-3">

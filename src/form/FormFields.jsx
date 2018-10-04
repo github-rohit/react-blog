@@ -1,6 +1,6 @@
 import React from 'react';
 import TinyMCEEditor from './TinyMCEEditor';
-import { InputBox, Textarea } from './Input';
+import { InputBox, Textarea, Select } from './Input';
 
 function FieldMarkup({
   name,
@@ -31,6 +31,7 @@ function FieldMarkup({
         />
       )}
       {type === 'tinymce' && <TinyMCEEditor name={name} {...props} />}
+      {type === 'select' && <Select name={name} {...props} />}
       {error && <div className="invalid-feedback">{error}</div>}
       <span className="form-text">{helperText}</span>
     </div>

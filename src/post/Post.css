@@ -103,6 +103,9 @@
   line-height: 1.7;
   font-weight: 300;
 }
+.ui-post-page .description * {
+  max-width: 100% !important;
+}
 .ui-post-page .description p {
   margin-bottom: 2em;
 }

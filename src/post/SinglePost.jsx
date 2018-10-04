@@ -27,7 +27,7 @@ class SinglePost extends Component {
     ) : (
       <React.Fragment>
         <div className="row">
-          <div className="col">
+          <div className="col-md-9">
             <SinglePostMarkup post={this.state.post} />
             <Comments id={this.state.post._id} />
           </div>

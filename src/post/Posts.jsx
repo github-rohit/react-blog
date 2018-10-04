@@ -57,11 +57,15 @@ class Posts extends Component {
   getQuery() {
     const url = new URLSearchParams();
     const { page, rowsPerPage: limit, query } = this.state;
-    const { category, createdBy: cb } = queryString.parse(query);
+    const { category, createdBy: cb, q: qParam } = queryString.parse(query);
     const { createdBy = cb } = this.props;
 
     url.set('page', page + 1);
     url.set('limit', limit);
+
+    if (qParam) {
+      url.set('q', qParam);
+    }
 
     if (createdBy) {
       url.set('createdBy', createdBy);
@@ -92,17 +96,25 @@ class Posts extends Component {
   }
 
   noRecord() {
-    const { category } = queryString.parse(this.state.query);
-    if (!category) {
-      return null;
-    }
+    const { category, q: qParam } = queryString.parse(this.state.query);
 
     return (
       <div className="text-center col">
         <h1>:( OOPS</h1>
         <h3>
-          No record found for {<span className="text-danger">{category}</span>}{' '}
-          Category .
+          {category ? (
+            <React.Fragment>
+              No record found for{' '}
+              <span className="text-danger">{category}</span> Category.
+            </React.Fragment>
+          ) : qParam ? (
+            <React.Fragment>
+              Your search - <span className="text-danger">{qParam} </span>- did
+              not match any documents.
+            </React.Fragment>
+          ) : (
+            'No record found.'
+          )}
         </h3>
       </div>
     );
@@ -116,7 +128,7 @@ class Posts extends Component {
   async componentWillReceiveProps(newProps) {
     const query = newProps.location.search;
 
-    if (query !== this.state.query) {
+    if (query !== this.state.query && this.state.load) {
       await this.setState({ query });
       this.getPosts();
     }
