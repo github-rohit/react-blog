@@ -1,0 +1,31 @@
+.page-not-found {
+  text-align: center;
+}
+.page-not-found h1 {
+  font-size: 7rem;
+  color: #3f51b5;
+}
+.page-not-found h1 .bug-icon {
+  margin-top: -7px;
+}
+.page-not-found h3 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.page-not-found p {
+  font-size: 2rem;
+  color: #666;
+}
+
+@media (max-width: 500px) {
+  .page-not-found h1 {
+    font-size: 5rem;
+  }
+  .page-not-found h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .page-not-found p {
+    font-size: 1rem;
+  }
+}

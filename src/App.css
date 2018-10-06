@@ -1,4 +1,5 @@
 @import url('//fonts.googleapis.com/css?family=Poppins:300,400,500|Material+Icons');
+@import url('//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 
 html {
   height: 100%;
@@ -122,10 +123,7 @@ button:focus {
 .form-card__body {
   padding: 25px;
 }
-.form-card__body .form-group label {
-  font-size: 0.85rem;
-}
-.form-card__body .form-group label {
+.form-group label {
   font-size: 0.85rem;
 }
 .form-text {

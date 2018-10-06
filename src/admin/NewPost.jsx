@@ -73,9 +73,6 @@ class NewPost extends Form {
 
   componentDidMount() {
     document.body.classList.add('no-footer');
-    if (!authService.user) {
-      this.props.history.replace('/');
-    }
   }
 
   componentWillUnmount() {

@@ -105,7 +105,9 @@ class NavBar extends Component {
               <React.Fragment>
                 <ul className="nav navbar-nav navbar-right mobile-show">
                   <li>
-                    <NavLink to="/admin/myprofile/view">MY PROFILE</NavLink>
+                    <NavLink to={`/admin/myprofile/view/${user._id}`}>
+                      MY PROFILE
+                    </NavLink>
                   </li>
                   <li>
                     <NavLink to="/logout">LOGOUT</NavLink>
@@ -141,7 +143,11 @@ class NavBar extends Component {
                   onClose={this.handleClose.bind(this)}
                 >
                   <li>
-                    <NavLink to="/admin/myprofile/view" className="d-flex">
+                    <NavLink
+                      onClick={this.handleClose.bind(this)}
+                      to={`/admin/myprofile/view/${user._id}`}
+                      className="d-flex"
+                    >
                       <div className="user-avatar rounded-circle align-self-center col">
                         <span>{this.userAvatarText(user.name)}</span>
                       </div>

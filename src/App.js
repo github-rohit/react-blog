@@ -12,6 +12,7 @@ import MyPosts from './admin/MyPosts';
 import NewPost from './admin/NewPost';
 import ProfileView from './admin/ProfileView';
 import ProfileEdit from './admin/ProfileEdit';
+import NotFound from './notFound/NotFound';
 import ProtectedRoute from './common/ProtectedRoute';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,11 +35,11 @@ class App extends Component {
               <Route path="/post/:id/:title" component={SinglePost} />
               <Route path="/author/:id/:name" component={Author} />
               <ProtectedRoute
-                path="/admin/myprofile/view"
+                path="/admin/myprofile/view/:id"
                 component={ProfileView}
               />
               <ProtectedRoute
-                path="/admin/myprofile/edit"
+                path="/admin/myprofile/edit/:id"
                 component={ProfileEdit}
               />
               <ProtectedRoute path="/admin/post/new" component={NewPost} />
@@ -48,7 +49,9 @@ class App extends Component {
                 component={MyPosts}
               />
               <Route path="/login" component={Login} />
+              <Route path="/not-found" component={NotFound} />
               <Route path="/" exact component={Home} />
+              <Redirect to="/not-found" />
             </Switch>
           </main>
           <footer className="footer">

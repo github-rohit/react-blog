@@ -84,3 +84,38 @@
 .form-group-sub .form-control + img {
   margin-top: 0.5rem;
 }
+
+.profile-container {
+  display: grid;
+  grid-template-columns: 240px auto;
+  grid-gap: 30px;
+}
+.profile-container h4 {
+  color: #3f51b5;
+}
+.profile-avatar img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+.profile-aboutme,
+.profile-social-media {
+  grid-column: 2/-1;
+}
+.profile-base-info p {
+  margin-bottom: 0.5rem;
+}
+.profile-social-media a {
+  color: #666;
+  font-size: 0.8rem;
+}
+.profile-social-media a .fa {
+  width: 24px;
+}
+.edit-profile-btn {
+  width: 100%;
+}
+.profile-container .fixed-wrapper-btns .container {
+  display: grid;
+  grid-template-columns: 240px auto;
+  grid-column-gap: 30px;
+}
