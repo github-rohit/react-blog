@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Joi from 'joi-browser';
 import Form from '../form/Form';
@@ -48,7 +49,9 @@ class Login extends Form {
 
       if (success) {
         authService.token = token;
-        window.location = '/';
+        const { state } = this.props.location;
+
+        window.location = state ? state.from.pathname : '/';
       }
     } catch (ex) {
       console.log(ex);
@@ -56,6 +59,9 @@ class Login extends Form {
   }
 
   render() {
+    if (authService.user) {
+      return <Redirect to="/admin/myposts/published" />;
+    }
     const { errors } = this.state;
     return (
       <React.Fragment>

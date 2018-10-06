@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
-import NoteAddOutlined from '@material-ui/icons/NoteAddOutlined';
 import authService from '../common/services/AuthService';
 import logo from '../logo.svg';
 

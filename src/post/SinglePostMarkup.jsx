@@ -40,7 +40,7 @@ function SinglePostMarkup(props) {
       </div>
       <hr />
       <div className="description">
-        {image && <img src={image} />}
+        {image && <img src={image} alt="" />}
         <div dangerouslySetInnerHTML={{ __html: description }} />
       </div>
     </div>

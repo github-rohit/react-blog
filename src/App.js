@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import NavBar from './navbar/NavBar';
 import Signup from './signup/Signup';
@@ -12,6 +12,7 @@ import MyPosts from './admin/MyPosts';
 import NewPost from './admin/NewPost';
 import ProfileView from './admin/ProfileView';
 import ProfileEdit from './admin/ProfileEdit';
+import ProtectedRoute from './common/ProtectedRoute';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -32,10 +33,20 @@ class App extends Component {
               <Route path="/logout" component={Logout} />
               <Route path="/post/:id/:title" component={SinglePost} />
               <Route path="/author/:id/:name" component={Author} />
-              <Route path="/admin/myprofile/view" component={ProfileView} />
-              <Route path="/admin/myprofile/edit" component={ProfileEdit} />
-              <Route path="/admin/post/new" component={NewPost} />
-              <Route path="/admin/myposts/:status" component={MyPosts} />
+              <ProtectedRoute
+                path="/admin/myprofile/view"
+                component={ProfileView}
+              />
+              <ProtectedRoute
+                path="/admin/myprofile/edit"
+                component={ProfileEdit}
+              />
+              <ProtectedRoute path="/admin/post/new" component={NewPost} />
+              <ProtectedRoute path="/admin/post/edit/:id" component={NewPost} />
+              <ProtectedRoute
+                path="/admin/myposts/:status"
+                component={MyPosts}
+              />
               <Route path="/login" component={Login} />
               <Route path="/" exact component={Home} />
             </Switch>

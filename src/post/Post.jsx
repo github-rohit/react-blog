@@ -2,7 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'moment';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Brightness from '@material-ui/icons/Brightness1';
+import DeleteIcon from '@material-ui/icons/DeleteOutline';
+import Edit from '@material-ui/icons/EditOutlined';
 import { getEncodeURI } from '../common/util';
 
 import imagePlaceHolder from '../logo.svg';
@@ -15,7 +18,7 @@ function getTitle(title = '', len = 120) {
   return title;
 }
 
-function Post({ post, col }) {
+function Post({ post, col, editable }) {
   const {
     _id: id,
     image,
@@ -25,9 +28,11 @@ function Post({ post, col }) {
     created_on: createdOn
   } = post;
 
-  const MyLink = props => (
+  const ReadMoreLink = props => (
     <Link to={`/post/${id}/${getEncodeURI(title)}`} {...props} />
   );
+
+  const EditLink = props => <Link to={`/admin/post/edit/${id}`} {...props} />;
 
   return (
     <div className={`col-md-${12 / col} col-sm-6 post-container`}>
@@ -72,9 +77,25 @@ function Post({ post, col }) {
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-center w-100">
-          <Button component={MyLink} size="small" color="primary">
+          <Button component={ReadMoreLink} size="small" color="primary">
             READ MORE
           </Button>
+          {editable && (
+            <span>
+              <IconButton
+                classes="small"
+                component={EditLink}
+                aria-label="Edit"
+              >
+                <Edit fontSize="small" />
+              </IconButton>
+              {editable !== 'published' && (
+                <IconButton aria-label="Delete">
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              )}
+            </span>
+          )}
         </div>
       </article>
     </div>

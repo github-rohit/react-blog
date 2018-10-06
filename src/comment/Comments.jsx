@@ -1,11 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import Joi from 'joi-browser';
+import Form from '../form/Form';
 import Comment from './Comment';
+import CommentForm from './CommentForm';
+import CustomizedSnackbars from '../common/MySnackbarContent';
+import authService from '../common/services/AuthService';
 
-class Comments extends Component {
-  state = { comments: [] };
+class Comments extends Form {
+  state = { comments: [], data: { comment: '' }, errors: {} };
 
-  async componentDidMount() {
+  schema = {
+    comment: Joi.string()
+      .required()
+      .min(5)
+      .max(160)
+      .label('Comment')
+  };
+
+  snackbar() {
+    const { errors } = this.state;
+    let message = 'Comment saved successfully.';
+    let variant = 'success';
+
+    if (errors.msg) {
+      variant = 'error';
+      message = errors.msg;
+    }
+
+    return (
+      <CustomizedSnackbars
+        variant={variant}
+        autoHideDuration={6000}
+        message={message}
+      />
+    );
+  }
+
+  async getComments() {
     try {
       const { id } = this.props;
       const response = await fetch(`http://localhost:3000/api/comments/${id}`, {
@@ -19,11 +51,49 @@ class Comments extends Component {
     }
   }
 
+  async doSubmit() {
+    try {
+      const { id: postId } = this.props;
+
+      const response = await fetch(`http://localhost:3000/api/comments`, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          postId,
+          created_by: authService.user._id,
+          ...this.state.data
+        })
+      });
+
+      const { comment, success } = await response.json();
+
+      if (success) {
+        comment.created_by = authService.user;
+        const comments = [...this.state.comments, comment];
+
+        this.setState({ comments, success, data: { comment: '' } });
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
+  async componentDidMount() {
+    await this.getComments();
+  }
+
   render() {
-    const { length } = this.state.comments;
+    const { errors, comments, success } = this.state;
+    const { length } = comments;
 
     return (
       <React.Fragment>
+        {(errors.msg || success) && this.snackbar()}
         <div className="ui-add-comment">
           <div className="ui-add-comment-header">
             <h4>{length} Comments</h4>
@@ -35,11 +105,24 @@ class Comments extends Component {
               ))}
           </div>
           <div className="ui-add-comment-footer">
-            Please{' '}
-            <Link to={`/login`}>
-              <strong>login</strong>
-            </Link>{' '}
-            for add Comment.
+            {authService.user ? (
+              <CommentForm
+                error={this.state.errors.comment}
+                value={this.state.data.comment}
+                disabled={this.validateAll.bind(this)}
+                onChange={this.handleChange.bind(this)}
+                onSubmit={this.handleSubmit.bind(this)}
+              />
+            ) : (
+              <React.Fragment>
+                Please{' '}
+                <Link to={`/login`}>
+                  {' '}
+                  <strong>login</strong>{' '}
+                </Link>{' '}
+                for add Comment.
+              </React.Fragment>
+            )}
           </div>
         </div>
       </React.Fragment>

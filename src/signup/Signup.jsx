@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CheckCircle from '@material-ui/icons/CheckCircleOutlineSharp';
 import Joi from 'joi-browser';
 import Form from '../form/Form';
 import Fields from './fields';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import authService from '../common/services/AuthService';
 
 class Signup extends Form {
   state = {
@@ -109,6 +110,9 @@ class Signup extends Form {
   }
 
   render() {
+    if (authService.user) {
+      return <Redirect to="/admin/myposts/published" />;
+    }
     const { success, errors } = this.state;
     return (
       <React.Fragment>

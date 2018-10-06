@@ -6,16 +6,20 @@ import authService from '../common/services/AuthService';
 class MyPosts extends Component {
   state = {};
 
-  async componentDidMount() {
-    console.log(authService.user);
-  }
-
   render() {
     const { _id: id } = authService.user;
+    const { status } = this.props.match.params;
+
     return (
       <React.Fragment>
         <MyPostsNav />
-        <Posts createdBy={id} byStatus={true} col={3} {...this.props} />
+        <Posts
+          createdBy={id}
+          byStatus={true}
+          col={3}
+          editable={status}
+          {...this.props}
+        />
       </React.Fragment>
     );
   }

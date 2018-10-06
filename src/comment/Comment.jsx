@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'moment';
 import Brightness from '@material-ui/icons/Brightness1';
+import { getEncodeURI } from '../common/util';
 
 function Comment(props) {
   const {
@@ -17,7 +18,11 @@ function Comment(props) {
         <i>
           By{' '}
           {createdBy && (
-            <Link to={`/author/${createdBy._id}`}>{createdBy.name}</Link>
+            <Link
+              to={`/author/${createdBy._id}/${getEncodeURI(createdBy.name)}`}
+            >
+              {createdBy.name}
+            </Link>
           )}{' '}
           <Brightness className={'sep-dot'} />
         </i>
