@@ -4,7 +4,8 @@ import Form from '../form/Form';
 import Fields from './fields.json';
 import NewPostSubFields from './NewPostSubFields';
 import NewPostButtons from './NewPostButtons';
-import { autoResizeTextarea } from '../common/util';
+import { autoResizeTextarea, getEncodeURI } from '../common/util';
+import CustomizedSnackbars from '../common/MySnackbarContent';
 import authService from '../common/services/AuthService';
 
 class NewPost extends Form {
@@ -16,6 +17,7 @@ class NewPost extends Form {
       category: '',
       tags: ''
     },
+    snackbar: null,
     errors: {}
   };
 
@@ -39,16 +41,25 @@ class NewPost extends Form {
   }
 
   async doSubmit(e) {
+    this.setState({ snackbar: null });
     try {
+      const { type, id } = this.props.match.params;
       const data = {
         created_by: authService.user._id,
         status: e.currentTarget.dataset.type,
         ...this.state.data
       };
+      let method = 'POST';
+      let url = `http://localhost:3000/api/posts`;
 
-      const response = await fetch(`http://localhost:3000/api/posts`, {
+      if (type === 'edit') {
+        url += `/${id}`;
+        method = 'PATCH';
+      }
+
+      const response = await fetch(url, {
         mode: 'cors',
-        method: 'POST',
+        method,
         credentials: 'include',
         headers: {
           Accept: 'application/json',
@@ -59,20 +70,51 @@ class NewPost extends Form {
 
       const { success, post, errors = {} } = await response.json();
 
-      this.setState({ success, errors });
+      this.setState({ errors });
 
-      if (success) {
+      if (success && data.status !== 'DRAFT') {
         this.props.history.replace(
-          `/post/${post._id}/${post.title}?success=true`
+          `/post/${post._id}/${getEncodeURI(post.title)}`
         );
+      } else if (success) {
+        this.setState({
+          snackbar: {
+            variant: 'success',
+            autoHideDuration: 6000,
+            message: 'Post updated successfully.'
+          }
+        });
       }
     } catch (ex) {
       console.log(ex);
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     document.body.classList.add('no-footer');
+    const { type, id } = this.props.match.params;
+
+    if (type === 'edit') {
+      try {
+        const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+          mode: 'cors'
+        });
+        const data = await response.json();
+        const {
+          title,
+          description,
+          tags = '',
+          category = '',
+          image = ''
+        } = data;
+
+        this.setState({ data: { title, description, tags, category, image } });
+        const elem = document.querySelector('[name="title"]');
+        autoResizeTextarea(elem);
+      } catch (ex) {
+        console.log(ex);
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -80,8 +122,11 @@ class NewPost extends Form {
   }
 
   render() {
+    const { snackbar } = this.state;
+
     return (
       <React.Fragment>
+        {snackbar && <CustomizedSnackbars {...snackbar} />}
         {authService.user && (
           <form className="ui-new-post">
             <div className="row">

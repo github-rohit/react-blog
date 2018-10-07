@@ -158,7 +158,11 @@ class NavBar extends Component {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="color" to="/logout">
+                    <NavLink
+                      onClick={this.handleClose.bind(this)}
+                      className="color"
+                      to="/logout"
+                    >
                       LOGOUT
                     </NavLink>
                   </li>

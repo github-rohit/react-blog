@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import Email from '@material-ui/icons/EmailSharp';
-import Website from '@material-ui/icons/ChromeReaderModeSharp';
-import Location from '@material-ui/icons/LocationCitySharp';
+import ProfileBasicMarkup from '../common/ProfileBasicMarkup';
 class ProfileView extends Component {
   state = { author: null };
 
@@ -29,7 +27,7 @@ class ProfileView extends Component {
           </a>
         ) : (
           <React.Fragment>
-            <a href="javascript:void(0)">
+            <a>
               <i className={`fa fa-${clsName}`} /> -
             </a>
           </React.Fragment>
@@ -74,43 +72,37 @@ class ProfileView extends Component {
       <Link to={`/admin/myprofile/edit/${_id}`} {...props} />
     );
 
+    const passwdLink = props => (
+      <Link to={`/admin/password/${_id}`} {...props} />
+    );
+
     return (
       <React.Fragment>
         <div className="profile-container">
-          <div className="profile-avatar">
-            <img className="img-fluid" src="/images/user.png" alt="user" />
-          </div>
-          <div className="profile-base-info">
-            <h2>{name}</h2>
-            {email && (
-              <p title="email">
-                <Email fontSize="small" color="action" /> {email}
-              </p>
-            )}
-            {website && (
-              <p title="Website">
-                <Website fontSize="small" color="action" />
-                &nbsp;
-                <a href={website} target="_blank">
-                  {website}
-                </a>
-              </p>
-            )}
-            {country && (
-              <p title="Location">
-                <Location fontSize="small" color="action" /> {country}
-              </p>
-            )}
-          </div>
+          <ProfileBasicMarkup
+            name={name}
+            email={email}
+            website={website}
+            country={country}
+          />
           <div>
             <Button
               size="small"
-              className="edit-profile-btn"
+              className="w-100 mb-3"
               component={editLink}
               variant="outlined"
               color="primary"
             >
               Edit Profile
+            </Button>
+            <Button
+              size="small"
+              className="w-100"
+              component={passwdLink}
+              variant="outlined"
+              color="primary"
+            >
+              Change Password
             </Button>
           </div>
           <div className="profile-aboutme">

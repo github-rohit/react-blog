@@ -18,7 +18,7 @@ function getTitle(title = '', len = 120) {
   return title;
 }
 
-function Post({ post, col, editable }) {
+function Post({ post, col, editable, onDelete }) {
   const {
     _id: id,
     image,
@@ -82,16 +82,12 @@ function Post({ post, col, editable }) {
           </Button>
           {editable && (
             <span>
-              <IconButton
-                classes="small"
-                component={EditLink}
-                aria-label="Edit"
-              >
-                <Edit fontSize="small" />
+              <IconButton onClick={onDelete} aria-label="Delete">
+                <DeleteIcon fontSize="small" />
               </IconButton>
               {editable !== 'published' && (
-                <IconButton aria-label="Delete">
-                  <DeleteIcon fontSize="small" />
+                <IconButton component={EditLink} aria-label="Edit">
+                  <Edit fontSize="small" />
                 </IconButton>
               )}
             </span>

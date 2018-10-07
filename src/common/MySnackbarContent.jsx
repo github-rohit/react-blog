@@ -97,10 +97,6 @@ class CustomizedSnackbars extends React.Component {
     open: false
   };
 
-  handleClick = () => {
-    this.setState({ open: true });
-  };
-
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -122,23 +118,21 @@ class CustomizedSnackbars extends React.Component {
       horizontal = 'right'
     } = this.props;
     return (
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: vertical,
-            horizontal: horizontal
-          }}
-          open={this.state.open}
-          autoHideDuration={autoHideDuration}
+      <Snackbar
+        anchorOrigin={{
+          vertical: vertical,
+          horizontal: horizontal
+        }}
+        open={this.state.open}
+        autoHideDuration={autoHideDuration}
+        onClose={this.handleClose}
+      >
+        <MySnackbarContentWrapper
           onClose={this.handleClose}
-        >
-          <MySnackbarContentWrapper
-            onClose={this.handleClose}
-            variant={variant}
-            message={message}
-          />
-        </Snackbar>
-      </div>
+          variant={variant}
+          message={message}
+        />
+      </Snackbar>
     );
   }
 }

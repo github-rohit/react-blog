@@ -12,6 +12,7 @@ import MyPosts from './admin/MyPosts';
 import NewPost from './admin/NewPost';
 import ProfileView from './admin/ProfileView';
 import ProfileEdit from './admin/ProfileEdit';
+import ChangePassword from './admin/ChangePassword';
 import NotFound from './notFound/NotFound';
 import ProtectedRoute from './common/ProtectedRoute';
 
@@ -42,8 +43,15 @@ class App extends Component {
                 path="/admin/myprofile/edit/:id"
                 component={ProfileEdit}
               />
-              <ProtectedRoute path="/admin/post/new" component={NewPost} />
-              <ProtectedRoute path="/admin/post/edit/:id" component={NewPost} />
+              <ProtectedRoute
+                path="/admin/password/:id"
+                component={ChangePassword}
+              />
+              <ProtectedRoute
+                path="/admin/post/:type/:id?"
+                exact
+                render={props => <NewPost key={new Date()} {...props} />}
+              />
               <ProtectedRoute
                 path="/admin/myposts/:status"
                 component={MyPosts}

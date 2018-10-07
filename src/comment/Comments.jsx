@@ -8,7 +8,7 @@ import CustomizedSnackbars from '../common/MySnackbarContent';
 import authService from '../common/services/AuthService';
 
 class Comments extends Form {
-  state = { comments: [], data: { comment: '' }, errors: {} };
+  state = { comments: [], data: { comment: '' }, errors: {}, snackbar: null };
 
   schema = {
     comment: Joi.string()
@@ -52,6 +52,7 @@ class Comments extends Form {
   }
 
   async doSubmit() {
+    this.setState({ snackbar: null });
     try {
       const { id: postId } = this.props;
 
@@ -70,13 +71,29 @@ class Comments extends Form {
         })
       });
 
-      const { comment, success } = await response.json();
+      const { comment, success, errors } = await response.json();
 
       if (success) {
         comment.created_by = authService.user;
         const comments = [...this.state.comments, comment];
 
-        this.setState({ comments, success, data: { comment: '' } });
+        this.setState({
+          comments,
+          data: { comment: '' },
+          snackbar: {
+            variant: 'success',
+            autoHideDuration: 6000,
+            message: 'Profile updated successfully.'
+          }
+        });
+      } else if (errors) {
+        this.setState({
+          errors,
+          snackbar: {
+            variant: 'error',
+            message: errors.msg || errors || 'Something went wrong!'
+          }
+        });
       }
     } catch (ex) {
       console.log(ex);
@@ -88,12 +105,12 @@ class Comments extends Form {
   }
 
   render() {
-    const { errors, comments, success } = this.state;
+    const { snackbar, comments } = this.state;
     const { length } = comments;
 
     return (
       <React.Fragment>
-        {(errors.msg || success) && this.snackbar()}
+        {snackbar && <CustomizedSnackbars {...snackbar} />}
         <div className="ui-add-comment">
           <div className="ui-add-comment-header">
             <h4>{length} Comments</h4>

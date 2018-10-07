@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Email from '@material-ui/icons/EmailSharp';
 import Joi from 'joi-browser';
 import Form from '../form/Form';
 import ProfileFields from './ProfileFields.json';
+import CustomizedSnackbars from '../common/MySnackbarContent';
 
 class ProfileEdit extends Form {
   state = {
@@ -21,6 +22,7 @@ class ProfileEdit extends Form {
       tumblr: '',
       pinterest: ''
     },
+    snackbar: null,
     errors: {}
   };
 
@@ -31,6 +33,46 @@ class ProfileEdit extends Form {
       .required()
       .label('Name')
   };
+
+  async doSubmit() {
+    this.setState({ snackbar: null });
+    try {
+      const { id } = this.props.match.params;
+      const response = await fetch(`http://localhost:3000/api/user/${id}`, {
+        mode: 'cors',
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.state.data)
+      });
+
+      const { success, user: data, errors = {} } = await response.json();
+
+      if (success) {
+        this.setState({
+          data,
+          snackbar: {
+            variant: 'success',
+            autoHideDuration: 6000,
+            message: 'Profile updated successfully.'
+          }
+        });
+      } else if (errors) {
+        this.setState({
+          errors,
+          snackbar: {
+            variant: 'error',
+            message: errors.msg || errors || 'Something went wrong!'
+          }
+        });
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
 
   async componentDidMount() {
     try {
@@ -47,11 +89,13 @@ class ProfileEdit extends Form {
   }
 
   render() {
+    const { snackbar } = this.state;
     const { name, email } = this.state.data;
 
     return (
       <React.Fragment>
-        {name && (
+        {snackbar && <CustomizedSnackbars {...snackbar} />}
+        {email && (
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="profile-container">
               <div className="profile-avatar">
@@ -68,8 +112,8 @@ class ProfileEdit extends Form {
                 <h4>SOCIAL MEDIA</h4>
                 {this.renderAllFieldMarkup(ProfileFields.social)}
               </div>
-              <div class="fixed-wrapper-btns create-btns clearfix">
-                <div class="container">
+              <div className="fixed-wrapper-btns create-btns clearfix">
+                <div className="container">
                   <div />
                   <div>
                     <Button

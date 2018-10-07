@@ -14,8 +14,10 @@ class MyPosts extends Component {
       <React.Fragment>
         <MyPostsNav />
         <Posts
+          key={status}
           createdBy={id}
           byStatus={true}
+          status={status}
           col={3}
           editable={status}
           {...this.props}
