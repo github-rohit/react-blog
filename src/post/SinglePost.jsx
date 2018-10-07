@@ -41,8 +41,3 @@ class SinglePost extends Component {
 }
 
 export default SinglePost;
-
-// function SinglePost({ match }) {
-//   const { id } = match;
-//   return <div>Read Post</div>;
-// }
