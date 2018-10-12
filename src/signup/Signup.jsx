@@ -6,6 +6,7 @@ import Joi from 'joi-browser';
 import Form from '../form/Form';
 import Fields from './fields';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import http from '../common/services/UserHttpService';
 import authService from '../common/services/AuthService';
 
 class Signup extends Form {
@@ -86,27 +87,19 @@ class Signup extends Form {
   }
 
   async doSubmit() {
-    try {
-      const response = await fetch(`http://localhost:3000/api/user`, {
-        mode: 'cors',
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.state.data)
-      });
+    const response = await http.post(this.state.data);
 
-      const { success, errors = {} } = await response.json();
-
-      if (response.status === 403) {
-        errors.email = errors.msg;
-      }
-
-      this.setState({ success, errors });
-    } catch (ex) {
-      console.log(ex);
+    if (!response) {
+      return;
     }
+
+    const { success, errors = {} } = response;
+
+    if (response.status === 403) {
+      errors.email = errors.msg;
+    }
+
+    this.setState({ success, errors });
   }
 
   render() {

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ProfileBasicMarkup from '../common/ProfileBasicMarkup';
+import http from '../common/services/UserHttpService';
+
 class ProfileView extends Component {
   state = { author: null };
 
@@ -47,17 +49,14 @@ class ProfileView extends Component {
   }
 
   async componentDidMount() {
-    try {
-      const { id } = this.props.match.params;
-      const response = await fetch(`http://localhost:3000/api/user/${id}`, {
-        mode: 'cors'
-      });
-      const author = await response.json();
+    const { id } = this.props.match.params;
+    const author = await http.getById(id);
 
-      this.setState({ author });
-    } catch (ex) {
-      console.log(ex);
+    if (!author) {
+      return;
     }
+
+    this.setState({ author });
   }
 
   render() {

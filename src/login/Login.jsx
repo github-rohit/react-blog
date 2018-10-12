@@ -5,6 +5,7 @@ import Joi from 'joi-browser';
 import Form from '../form/Form';
 import Fields from './fields';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import http from '../common/services/UserHttpService';
 import authService from '../common/services/AuthService';
 
 class Login extends Form {
@@ -32,29 +33,21 @@ class Login extends Form {
   }
 
   async doSubmit() {
-    try {
-      const response = await fetch(`http://localhost:3000/api/user/login`, {
-        mode: 'cors',
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.state.data)
-      });
-      const { success, token, errors = {} } = await response.json();
+    const response = await http.login(this.state.data);
 
-      this.setState({ success, errors });
+    if (!response) {
+      return;
+    }
 
-      if (success) {
-        authService.token = token;
-        const { state } = this.props.location;
+    const { success, token, errors = {} } = response;
 
-        window.location = state ? state.from.pathname : '/';
-      }
-    } catch (ex) {
-      console.log(ex);
+    this.setState({ success, errors });
+
+    if (success) {
+      authService.token = token;
+      const { state } = this.props.location;
+
+      window.location = state ? state.from.pathname : '/';
     }
   }
 

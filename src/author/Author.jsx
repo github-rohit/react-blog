@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AuthorMarkup from './AuthorMarkup';
 import Posts from '../post/Posts';
+import http from '../common/services/UserHttpService';
 
 import './Author.css';
 
@@ -8,16 +9,12 @@ class Author extends Component {
   state = { author: {} };
 
   async componentDidMount() {
-    try {
-      const { id } = this.props.match.params;
-      const response = await fetch(`http://localhost:3000/api/user/${id}`, {
-        mode: 'cors'
-      });
-      const author = await response.json();
+    const { id } = this.props.match.params;
+    const response = await http.getById(id);
 
+    if (response) {
+      const author = response;
       this.setState({ author });
-    } catch (ex) {
-      console.log(ex);
     }
   }
 

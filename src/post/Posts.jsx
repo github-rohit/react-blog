@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import TablePagination from '@material-ui/core/TablePagination';
 import Post from './Post';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import http from '../common/services/PostHttpService';
 import './Post.css';
 
 const LIMIT = 10;
@@ -38,59 +39,35 @@ class Posts extends Component {
   }
 
   async deleteAction(id) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
-        mode: 'cors',
-        method: 'DELETE',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-      });
+    const response = await http.delete(id);
 
-      const { success, errors = {} } = await response.json();
+    if (!response) {
+      return;
+    }
 
-      this.setState({ success, errors });
+    const { success, errors = {} } = response;
 
-      if (success) {
-        await this.getPosts();
-      }
-    } catch (ex) {
-      console.log(ex);
+    this.setState({ success, errors });
+
+    if (success) {
+      await this.getPosts();
     }
   }
 
   async getPosts() {
-    try {
-      const query = await this.getQuery();
-      const { status, createdBy } = this.props;
-      let response;
+    const query = await this.getQuery();
+    const { status, createdBy } = this.props;
+    let response;
 
-      if (status && status === 'draft') {
-        response = await fetch(
-          `http://localhost:3000/api/posts/${createdBy}?${query}`,
-          {
-            mode: 'cors',
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-      } else {
-        response = await fetch(`http://localhost:3000/api/posts?${query}`, {
-          mode: 'cors'
-        });
-      }
+    if (status && status === 'draft') {
+      response = await http.authGet(createdBy, query);
+    } else {
+      response = await http.get(query);
+    }
 
-      const { posts, total: count } = await response.json();
-
+    if (response) {
+      const { posts, total: count } = response;
       this.setState({ posts, count, load: true });
-    } catch (ex) {
-      console.log(ex);
     }
   }
 

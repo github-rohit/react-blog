@@ -6,6 +6,7 @@ import NewPostSubFields from './NewPostSubFields';
 import NewPostButtons from './NewPostButtons';
 import { autoResizeTextarea, getEncodeURI } from '../common/util';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import http from '../common/services/PostHttpService';
 import authService from '../common/services/AuthService';
 
 class NewPost extends Form {
@@ -42,51 +43,40 @@ class NewPost extends Form {
 
   async doSubmit(e) {
     this.setState({ snackbar: null });
-    try {
-      const { type, id } = this.props.match.params;
-      const data = {
-        created_by: authService.user._id,
-        status: e.currentTarget.dataset.type,
-        ...this.state.data
-      };
-      let method = 'POST';
-      let url = `http://localhost:3000/api/posts`;
+    const { type, id } = this.props.match.params;
+    const data = {
+      created_by: authService.user._id,
+      status: e.currentTarget.dataset.type,
+      ...this.state.data
+    };
+    let response;
 
-      if (type === 'edit') {
-        url += `/${id}`;
-        method = 'PATCH';
-      }
+    if (type === 'edit') {
+      response = await http.patch(id, data);
+    } else {
+      response = await http.post(data);
+    }
 
-      const response = await fetch(url, {
-        mode: 'cors',
-        method,
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+    if (!response) {
+      return;
+    }
+
+    const { success, post, errors = {} } = response;
+
+    this.setState({ errors });
+
+    if (success && data.status !== 'DRAFT') {
+      this.props.history.replace(
+        `/post/${post._id}/${getEncodeURI(post.title)}`
+      );
+    } else if (success) {
+      this.setState({
+        snackbar: {
+          variant: 'success',
+          autoHideDuration: 6000,
+          message: 'Post updated successfully.'
+        }
       });
-
-      const { success, post, errors = {} } = await response.json();
-
-      this.setState({ errors });
-
-      if (success && data.status !== 'DRAFT') {
-        this.props.history.replace(
-          `/post/${post._id}/${getEncodeURI(post.title)}`
-        );
-      } else if (success) {
-        this.setState({
-          snackbar: {
-            variant: 'success',
-            autoHideDuration: 6000,
-            message: 'Post updated successfully.'
-          }
-        });
-      }
-    } catch (ex) {
-      console.log(ex);
     }
   }
 
@@ -95,25 +85,18 @@ class NewPost extends Form {
     const { type, id } = this.props.match.params;
 
     if (type === 'edit') {
-      try {
-        const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
-          mode: 'cors'
-        });
-        const data = await response.json();
-        const {
-          title,
-          description,
-          tags = '',
-          category = '',
-          image = ''
-        } = data;
+      const response = await http.getById(id);
 
-        this.setState({ data: { title, description, tags, category, image } });
-        const elem = document.querySelector('[name="title"]');
-        autoResizeTextarea(elem);
-      } catch (ex) {
-        console.log(ex);
+      if (!response) {
+        return;
       }
+
+      const data = response;
+      const { title, description, tags = '', category = '', image = '' } = data;
+
+      this.setState({ data: { title, description, tags, category, image } });
+      const elem = document.querySelector('[name="title"]');
+      autoResizeTextarea(elem);
     }
   }
 

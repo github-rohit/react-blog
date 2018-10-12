@@ -5,6 +5,7 @@ import Form from '../form/Form';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import http from '../common/services/CommentHttpService';
 import authService from '../common/services/AuthService';
 
 class Comments extends Form {
@@ -38,65 +39,56 @@ class Comments extends Form {
   }
 
   async getComments() {
-    try {
-      const { id } = this.props;
-      const response = await fetch(`http://localhost:3000/api/comments/${id}`, {
-        mode: 'cors'
-      });
-      const comments = await response.json();
+    const { id } = this.props;
+    const response = await http.getById(id);
 
+    if (response) {
+      const comments = response;
       this.setState({ comments });
-    } catch (ex) {
-      console.log(ex);
     }
+  }
+
+  updateCommentArray(comment) {
+    comment.created_by = authService.user;
+    const comments = [...this.state.comments, comment];
+
+    this.setState({
+      comments,
+      data: { comment: '' },
+      snackbar: {
+        variant: 'success',
+        autoHideDuration: 6000,
+        message: 'Profile updated successfully.'
+      }
+    });
   }
 
   async doSubmit() {
     this.setState({ snackbar: null });
-    try {
-      const { id: postId } = this.props;
+    const { id: postId } = this.props;
 
-      const response = await fetch(`http://localhost:3000/api/comments`, {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          postId,
-          created_by: authService.user._id,
-          ...this.state.data
-        })
+    const response = await http.post({
+      postId,
+      created_by: authService.user._id,
+      ...this.state.data
+    });
+
+    if (!response) {
+      return;
+    }
+
+    const { comment, success, errors } = response;
+
+    if (success) {
+      this.updateCommentArray(comment);
+    } else if (errors) {
+      this.setState({
+        errors,
+        snackbar: {
+          variant: 'error',
+          message: errors.msg || errors || 'Something went wrong!'
+        }
       });
-
-      const { comment, success, errors } = await response.json();
-
-      if (success) {
-        comment.created_by = authService.user;
-        const comments = [...this.state.comments, comment];
-
-        this.setState({
-          comments,
-          data: { comment: '' },
-          snackbar: {
-            variant: 'success',
-            autoHideDuration: 6000,
-            message: 'Profile updated successfully.'
-          }
-        });
-      } else if (errors) {
-        this.setState({
-          errors,
-          snackbar: {
-            variant: 'error',
-            message: errors.msg || errors || 'Something went wrong!'
-          }
-        });
-      }
-    } catch (ex) {
-      console.log(ex);
     }
   }
 

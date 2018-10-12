@@ -5,6 +5,7 @@ import Joi from 'joi-browser';
 import Form from '../form/Form';
 import ProfileFields from './ProfileFields.json';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import http from '../common/services/UserHttpService';
 
 class ProfileEdit extends Form {
   state = {
@@ -36,56 +37,45 @@ class ProfileEdit extends Form {
 
   async doSubmit() {
     this.setState({ snackbar: null });
-    try {
-      const { id } = this.props.match.params;
-      const response = await fetch(`http://localhost:3000/api/user/${id}`, {
-        mode: 'cors',
-        method: 'PATCH',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.state.data)
+
+    const { id } = this.props.match.params;
+    const response = await http.patch(id, this.state.data);
+
+    if (!response) {
+      return;
+    }
+
+    const { success, user: data, errors = {} } = response;
+
+    if (success) {
+      this.setState({
+        data,
+        snackbar: {
+          variant: 'success',
+          autoHideDuration: 6000,
+          message: 'Profile updated successfully.'
+        }
       });
-
-      const { success, user: data, errors = {} } = await response.json();
-
-      if (success) {
-        this.setState({
-          data,
-          snackbar: {
-            variant: 'success',
-            autoHideDuration: 6000,
-            message: 'Profile updated successfully.'
-          }
-        });
-      } else if (errors) {
-        this.setState({
-          errors,
-          snackbar: {
-            variant: 'error',
-            message: errors.msg || errors || 'Something went wrong!'
-          }
-        });
-      }
-    } catch (ex) {
-      console.log(ex);
+    } else if (errors) {
+      this.setState({
+        errors,
+        snackbar: {
+          variant: 'error',
+          message: errors.msg || errors || 'Something went wrong!'
+        }
+      });
     }
   }
 
   async componentDidMount() {
-    try {
-      const { id } = this.props.match.params;
-      const response = await fetch(`http://localhost:3000/api/user/${id}`, {
-        mode: 'cors'
-      });
-      const data = await response.json();
+    const { id } = this.props.match.params;
+    const data = await http.getById(id);
 
-      this.setState({ data });
-    } catch (ex) {
-      console.log(ex);
+    if (!data) {
+      return;
     }
+
+    this.setState({ data });
   }
 
   render() {

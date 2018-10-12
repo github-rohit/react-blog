@@ -25,19 +25,6 @@ class Categories extends Component {
     ]
   };
 
-  async componentDidMount() {
-    // try {
-    //   const { id } = this.props.match.params;
-    //   const response = await fetch(`http://localhost:3000/api/categories`, {
-    //     mode: 'cors'
-    //   });
-    //   const post = await response.json();
-    //   this.setState({ post });
-    // } catch (ex) {
-    //   console.log(ex);
-    // }
-  }
-
   render() {
     return (
       <React.Fragment>

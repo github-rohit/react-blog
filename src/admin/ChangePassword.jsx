@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Joi from 'joi-browser';
 import Form from '../form/Form';
 import Fields from './ChangePasswordFields.json';
 import CustomizedSnackbars from '../common/MySnackbarContent';
+import http from '../common/services/UserHttpService';
 
 class ChangePassword extends Form {
   state = {
@@ -35,44 +36,34 @@ class ChangePassword extends Form {
 
   async doSubmit() {
     this.setState({ snackbar: null });
-    try {
-      const { id } = this.props.match.params;
+    const { id } = this.props.match.params;
+    const response = await http.password({
+      id,
+      ...this.state.data
+    });
 
-      const response = await fetch(`http://localhost:3000/api/user/password`, {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id,
-          ...this.state.data
-        })
+    if (!response) {
+      return;
+    }
+
+    const { success, errors } = response;
+
+    if (success) {
+      this.setState({
+        snackbar: {
+          variant: 'success',
+          autoHideDuration: 6000,
+          message: 'Profile updated successfully.'
+        }
       });
-
-      const { success, errors } = await response.json();
-      console.log(success);
-      if (success) {
-        this.setState({
-          snackbar: {
-            variant: 'success',
-            autoHideDuration: 6000,
-            message: 'Profile updated successfully.'
-          }
-        });
-      } else if (errors) {
-        this.setState({
-          errors,
-          snackbar: {
-            variant: 'error',
-            message: errors.msg || errors || 'Something went wrong!'
-          }
-        });
-      }
-    } catch (ex) {
-      console.log(ex);
+    } else if (errors) {
+      this.setState({
+        errors,
+        snackbar: {
+          variant: 'error',
+          message: errors.msg || errors || 'Something went wrong!'
+        }
+      });
     }
   }
 

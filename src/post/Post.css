@@ -8,7 +8,7 @@
   background: #fff;
   padding: 15px;
   margin-bottom: 30px;
-  border: 1px solid #efefef;
+  /* border: 1px solid #efefef; */
   -webkit-transition: box-shadow ease 0.3s;
   -moz-transition: box-shadow ease 0.3s;
   -o-transition: box-shadow ease 0.3s;

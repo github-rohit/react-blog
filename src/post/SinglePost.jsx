@@ -2,25 +2,22 @@ import React, { Component } from 'react';
 import SinglePostMarkup from './SinglePostMarkup';
 import Comments from '../comment/Comments';
 import Categories from '../categorie/Categories';
+import http from '../common/services/PostHttpService';
 
 class SinglePost extends Component {
   state = { post: {} };
 
   async componentDidMount() {
-    try {
-      const { id } = this.props.match.params;
-      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
-        mode: 'cors'
-      });
-      const post = await response.json();
+    const { id } = this.props.match.params;
+    const post = await http.getById(id);
 
+    if (post) {
       this.setState({ post });
-    } catch (ex) {
-      console.log(ex);
     }
   }
 
   render() {
+    const { _id, status } = this.state.post;
     const { length } = Object.keys(this.state.post);
     return length === 0 ? (
       ''
@@ -29,7 +26,7 @@ class SinglePost extends Component {
         <div className="row">
           <div className="col-md-9">
             <SinglePostMarkup post={this.state.post} />
-            <Comments id={this.state.post._id} />
+            {status !== 'DRAFT' && <Comments id={_id} />}
           </div>
           <div className="col-md-3">
             <Categories />
