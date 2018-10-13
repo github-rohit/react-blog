@@ -1,6 +1,6 @@
 class HttpService {
   constructor(url) {
-    this.urlPrefix = `http://localhost:3000/${url}`;
+    this.urlPrefix = `http://localhost:3000/api/${url}`;
   }
   async get(query = '') {
     try {

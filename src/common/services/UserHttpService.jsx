@@ -14,4 +14,4 @@ class UserHttpService extends HttpService {
   }
 }
 
-export default new UserHttpService('api/user');
+export default new UserHttpService('user');

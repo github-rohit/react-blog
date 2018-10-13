@@ -6,4 +6,4 @@ class PostService extends HttpService {
   }
 }
 
-export default new PostService('api/posts');
+export default new PostService('posts');
