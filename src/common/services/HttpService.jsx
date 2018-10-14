@@ -1,3 +1,5 @@
+import auth from './AuthService';
+
 class HttpService {
   constructor(url) {
     this.urlPrefix = `http://localhost:3000/api/${url}`;
@@ -37,7 +39,8 @@ class HttpService {
         credentials: 'include',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-Auth': auth.token
         }
       };
       if (data) {
@@ -59,7 +62,8 @@ class HttpService {
         credentials: 'include',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Auth': auth.token
         },
         body: JSON.stringify(data)
       });
@@ -78,7 +82,8 @@ class HttpService {
         credentials: 'include',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Auth': auth.token
         }
       });
 
