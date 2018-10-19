@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ProfileBasicMarkup from '../common/ProfileBasicMarkup';
+import AuthorLoader from '../author/AuthorLoader';
 import http from '../common/services/UserHttpService';
 
 class ProfileView extends Component {
@@ -61,7 +62,7 @@ class ProfileView extends Component {
 
   render() {
     if (!this.state.author) {
-      return null;
+      return <AuthorLoader />;
     }
 
     const { _id, name, email, aboutme, website, country } =

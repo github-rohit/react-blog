@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import queryString from 'query-string';
 import TablePagination from '@material-ui/core/TablePagination';
 import Post from './Post';
+import PostLoader from './PostLoader';
 import CustomizedSnackbars from '../common/MySnackbarContent';
 import http from '../common/services/PostHttpService';
 import './Post.css';
@@ -10,6 +11,7 @@ const LIMIT = 10;
 
 class Posts extends Component {
   state = {
+    postLoader: true,
     posts: [],
     count: 0,
     rowsPerPage: LIMIT,
@@ -55,6 +57,7 @@ class Posts extends Component {
   }
 
   async getPosts() {
+    this.setState({ load: false, postLoader: true });
     const query = await this.getQuery();
     const { status, createdBy } = this.props;
     let response;
@@ -67,7 +70,7 @@ class Posts extends Component {
 
     if (response) {
       const { posts, total: count } = response;
-      this.setState({ posts, count, load: true });
+      this.setState({ posts, count, load: true, postLoader: false });
     }
   }
 
@@ -181,12 +184,13 @@ class Posts extends Component {
   }
 
   render() {
-    const { count, rowsPerPage, load, errors } = this.state;
+    const { count, rowsPerPage, load, postLoader } = this.state;
     const { length } = this.state.posts;
     const { col = 2, editable = null } = this.props;
 
     return (
       <React.Fragment>
+        {postLoader && <PostLoader col={col} />}
         {this.getSnackbars()}
         {load && (
           <div className="row">

@@ -4,6 +4,7 @@ import Email from '@material-ui/icons/EmailSharp';
 import Joi from 'joi-browser';
 import Form from '../form/Form';
 import ProfileFields from './ProfileFields.json';
+import AuthorLoader from '../author/AuthorLoader';
 import CustomizedSnackbars from '../common/MySnackbarContent';
 import http from '../common/services/UserHttpService';
 
@@ -85,7 +86,9 @@ class ProfileEdit extends Form {
     return (
       <React.Fragment>
         {snackbar && <CustomizedSnackbars {...snackbar} />}
-        {email && (
+        {!email ? (
+          <AuthorLoader />
+        ) : (
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="profile-container">
               <div className="profile-avatar">
