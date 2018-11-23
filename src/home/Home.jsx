@@ -27,10 +27,10 @@ class Home extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          <div className="col">
+          <div className="col post-col">
             <Posts {...this.props} />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 post-search-col">
             <SearchInput
               value={serachQuery}
               onKeyPress={this.handelOnKeyPress.bind(this)}

@@ -28,7 +28,7 @@ class SinglePost extends Component {
             <SinglePostMarkup post={this.state.post} />
             {status !== 'DRAFT' && <Comments id={_id} />}
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 post-single-categorie-col">
             <Categories />
           </div>
         </div>

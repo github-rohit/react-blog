@@ -233,3 +233,12 @@
   -webkit-box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.5);
   box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.5);
 }
+@media (max-width: 767px) {
+  .post-col {
+    order: 2;
+  }
+  .post-single-categorie-col,
+  .post-search-col .category-nav {
+    display: none;
+  }
+}
