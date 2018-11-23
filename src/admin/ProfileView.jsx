@@ -85,7 +85,7 @@ class ProfileView extends Component {
             website={website}
             country={country}
           />
-          <div>
+          <div class="profile-action-btn">
             <Button
               size="small"
               className="w-100 mb-3"

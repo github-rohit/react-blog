@@ -69,7 +69,7 @@ class Posts extends Component {
     }
 
     if (response) {
-      const { posts, total: count } = response;
+      const { posts = [], total: count } = response;
       this.setState({ posts, count, load: true, postLoader: false });
     }
   }

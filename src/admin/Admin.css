@@ -119,3 +119,33 @@
   grid-template-columns: 240px auto;
   grid-column-gap: 30px;
 }
+
+@media (max-width: 500px) {
+  .navbar-expand {
+    margin-bottom: 1.5rem;
+  }
+  .post-container {
+    margin-bottom: 1.5rem;
+  }
+  .post-card {
+    margin-bottom: 0;
+    padding: 0;
+  }
+  .post-card:hover {
+    box-shadow: none;
+  }
+  .profile-container {
+    grid-template-columns: initial;
+  }
+  .profile-action-btn {
+    grid-row-start: 4;
+    margin-bottom: 3rem;
+  }
+  .profile-avatar {
+    display: none;
+  }
+  .profile-container .fixed-wrapper-btns .container {
+    grid-template-columns: initial;
+    text-align: center;
+  }
+}

@@ -115,7 +115,7 @@ class NavBar extends Component {
                 </ul>
                 {
                   <Button
-                    className="menu-write-btn"
+                    className="menu-write-btn mobile-hide"
                     component={WriteLink}
                     variant="outlined"
                     color="primary"
